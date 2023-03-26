@@ -1,0 +1,81 @@
+name: six_pos
+description: A new Flutter application.
+publish_to: 'none' #
+version: 1.0.2+2
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+
+  intl: ^0.18.0
+  file: ^6.1.4
+  shared_preferences: ^2.0.6
+  connectivity: ^3.0.6
+  firebase_core: ^1.2.1
+  firebase_messaging: ^11.4.0
+  flutter_local_notifications: ^9.4.0
+  path_provider: ^2.0.2
+  url_strategy: ^0.2.0
+  image_picker: ^0.8.4+10
+  fl_chart: ^0.55.0
+  get: ^4.6.3
+  flutter_switch: ^0.3.2
+  timezone: ^0.8.0
+  country_currency_pickers: ^2.0.0
+  advance_pdf_viewer: ^2.0.1
+  file_picker: ^4.6.1
+  barcode_widget: ^2.0.2
+  flutter_barcode_scanner: ^2.0.0
+  permission_handler: ^10.0.0
+  flutter_downloader: ^1.8.0+1
+  fluttertoast: ^8.0.9
+  flutter_pos_printer_platform:
+  esc_pos_utils: ^1.1.0
+  printing: ^5.9.1
+  shimmer: ^2.0.0
+  esc_pos_printer: ^4.1.0
+  bluetooth_print: ^4.3.0
+  another_brother: ^0.0.32
+  location: ^4.4.0
+  wifi_iot: ^0.3.18
+  flutter_pdfview: ^1.2.9
+  learning_translate: ^0.0.4
+  open_file: ^3.2.1
+
+
+
+
+dependency_overrides:
+  firebase_core_platform_interface: 4.5.1
+
+
+
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/image/
+    - assets/language/
+
+  fonts:
+    - family: Ubuntu
+      fonts:
+        - asset: assets/font/Ubuntu-Regular.ttf
+          weight: 400
+        - asset: assets/font/Ubuntu-Medium.ttf
+          weight: 500
+        - asset: assets/font/Ubuntu-Bold.ttf
+          weight: 600
+        - asset: assets/font/Ubuntu-Light.ttf
+          weight: 300
