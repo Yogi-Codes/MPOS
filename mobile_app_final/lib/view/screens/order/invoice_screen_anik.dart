@@ -337,7 +337,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                                             var a;
 
                                             final PdfPageFormat pdfPageFormat =
-                                                PdfPageFormat.roll57;
+                                                PdfPageFormat(height, width);
                                             Permission.location.request();
                                             _getbyte(List<String> N,
                                                 List<double> C) async {

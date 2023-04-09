@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
+
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -39,6 +41,7 @@ class InVoiceScreen extends StatefulWidget {
 class _InVoiceScreenState extends State<InVoiceScreen> {
   Future<void> _loadData() async {
     await Get.find<OrderController>().getInvoiceData(widget.orderId);
+    printAuto();
   }
 
   Future<Uint8List> _generatePdf(
@@ -59,6 +62,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
 
     final logoImage = pw.MemoryImage(
         (await rootBundle.load(Images.mpos_super_shop)).buffer.asUint8List());
+    const double fontsize = 9;
 
     pdf.addPage(
       pw.Page(
@@ -89,40 +93,56 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
               pw.Text(address,
                   textAlign: pw.TextAlign.center,
                   style: pw.TextStyle(
-                      color: PdfColors.black, fontSize: 18, font: EnglishFont)),
-              pw.Text(
-                  '--------------------------------------------------------------------------------------------------',
-                  style: pw.TextStyle(color: PdfColors.black, fontSize: 18)),
+                      color: PdfColors.black,
+                      fontSize: fontsize,
+                      font: EnglishFont)),
+              pw.Text('----------------------------------------------',
+                  style:
+                      pw.TextStyle(color: PdfColors.black, fontSize: fontsize)),
               pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Text('รหัสคำสั่งซื้อ :# ',
-                    style: pw.TextStyle(
-                        color: PdfColors.red600, fontSize: 18, font: ThaiFont)),
-                pw.Text(id.toString() + '                ',
-                    style: pw.TextStyle(
-                        color: PdfColors.red600,
-                        fontSize: 18,
-                        font: EnglishFont)),
-                pw.Text('วิธีการชำระเงิน',
-                    style: pw.TextStyle(
-                        color: PdfColors.red600, fontSize: 18, font: ThaiFont)),
+                pw.Expanded(
+                  child: pw.Text('รหัสคำสั่งซื้อ :# ',
+                      style: pw.TextStyle(
+                          color: PdfColors.blue500,
+                          fontSize: fontsize,
+                          font: ThaiFont)),
+                ),
+                pw.Expanded(
+                  child: pw.Text(id.toString() + '                ',
+                      style: pw.TextStyle(
+                          color: PdfColors.blue500,
+                          fontSize: fontsize,
+                          font: EnglishFont)),
+                ),
+                pw.Expanded(
+                  child: pw.Text('วิธีการชำระเงิน',
+                      style: pw.TextStyle(
+                          color: PdfColors.blue500,
+                          fontSize: fontsize,
+                          font: ThaiFont)),
+                ),
               ]),
               pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Text(
-                    DateConverter.dateTimeStringToMonthAndTime(date) +
-                        '                 ',
-                    style: pw.TextStyle(
-                        color: PdfColors.red600,
-                        fontSize: 18,
-                        font: EnglishFont)),
-                pw.Text(method.tr.toString(),
-                    style: pw.TextStyle(
-                        color: PdfColors.black,
-                        fontSize: 18,
-                        font: EnglishFont)),
+                pw.Expanded(
+                  child: pw.Text(
+                      DateConverter.dateTimeStringToMonthAndTime(date) +
+                          '                 ',
+                      style: pw.TextStyle(
+                          color: PdfColors.blue500,
+                          fontSize: fontsize,
+                          font: EnglishFont)),
+                ),
+                pw.Expanded(
+                  child: pw.Text(method.tr.toString(),
+                      style: pw.TextStyle(
+                          color: PdfColors.black,
+                          fontSize: fontsize,
+                          font: EnglishFont)),
+                ),
               ]),
-              pw.Text(
-                  '--------------------------------------------------------------------------------------------------',
-                  style: pw.TextStyle(color: PdfColors.black, fontSize: 18)),
+              pw.Text('----------------------------------------------',
+                  style:
+                      pw.TextStyle(color: PdfColors.black, fontSize: fontsize)),
               for (int i = 0; i < N.length; i++)
                 pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.center,
@@ -132,21 +152,21 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                             textAlign: pw.TextAlign.center,
                             style: pw.TextStyle(
                                 color: PdfColors.black,
-                                fontSize: 18,
+                                fontSize: fontsize,
                                 font: EnglishFont)),
                       ),
                       pw.Expanded(
                         child: pw.Text('${N[i].toString()}',
                             style: pw.TextStyle(
                                 color: PdfColors.black,
-                                fontSize: 18,
+                                fontSize: fontsize,
                                 font: EnglishFont)),
                       ),
                       pw.Expanded(
                         child: pw.Text(C[i].toString(),
                             style: pw.TextStyle(
                                 color: PdfColors.black,
-                                fontSize: 18,
+                                fontSize: fontsize,
                                 font: EnglishFont)),
                       ),
                     ]),
@@ -156,7 +176,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(
                           color: PdfColors.black,
-                          fontSize: 18,
+                          fontSize: fontsize,
                           font: ThaiFont)),
                 ),
                 pw.Expanded(
@@ -164,7 +184,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(
                           color: PdfColors.black,
-                          fontSize: 18,
+                          fontSize: fontsize,
                           font: EnglishFont)),
                 ),
               ]),
@@ -174,7 +194,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(
                           color: PdfColors.black,
-                          fontSize: 18,
+                          fontSize: fontsize,
                           font: ThaiFont)),
                 ),
                 pw.Expanded(
@@ -182,7 +202,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(
                           color: PdfColors.black,
-                          fontSize: 18,
+                          fontSize: fontsize,
                           font: EnglishFont)),
                 ),
               ]),
@@ -192,28 +212,29 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(
                           color: PdfColors.black,
-                          fontSize: 18,
+                          fontSize: fontsize,
                           font: ThaiFont)),
                 ),
                 pw.Expanded(
-                  child: pw.Text(totalPayable.toStringAsFixed(2),
+                  child: pw.Text(
+                      totalPayable.roundToDouble().toStringAsFixed(2),
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(
                           color: PdfColors.black,
-                          fontSize: 18,
+                          fontSize: fontsize,
                           font: EnglishFont)),
                 ),
               ]),
-              pw.Text(
-                  '--------------------------------------------------------------------------------------------------',
-                  style: pw.TextStyle(color: PdfColors.black, fontSize: 18)),
+              pw.Text('----------------------------------------------',
+                  style:
+                      pw.TextStyle(color: PdfColors.black, fontSize: fontsize)),
               pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
                 pw.Expanded(
                   child: pw.Text('terms_and_condition'.tr,
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(
                           color: PdfColors.black,
-                          fontSize: 18,
+                          fontSize: fontsize,
                           font: ThaiFont)),
                 ),
               ]),
@@ -223,13 +244,13 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                       textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(
                           color: PdfColors.black,
-                          fontSize: 18,
+                          fontSize: fontsize,
                           font: ThaiFont)),
                 ),
               ]),
-              pw.Text(
-                  '--------------------------------------------------------------------------------------------------',
-                  style: pw.TextStyle(color: PdfColors.black, fontSize: 18)),
+              pw.Text('----------------------------------------------',
+                  style:
+                      pw.TextStyle(color: PdfColors.black, fontSize: fontsize)),
             ],
           );
         },
@@ -238,6 +259,63 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
 
     final pdfBytes = await pdf.save();
     return Uint8List.fromList(pdfBytes);
+  }
+
+  double printAuto() {
+    var a;
+    final invoiceController = Get.find<OrderController>();
+    final shopController = Get.find<SplashController>();
+    final PdfPageFormat pdfPageFormat = PdfPageFormat.roll57;
+    Permission.location.request();
+    _getbyte(List<String> N, List<double> C) async {
+      a = await _generatePdf(
+          pdfPageFormat,
+          'Receipt',
+          invoiceController.totalTaxAmount,
+          invoiceController.discountOnProduct,
+          totalPayableAmount,
+          invoiceController.invoice.id,
+          N,
+          C,
+          shopController.configModel.businessInfo.shopAddress,
+          invoiceController.invoice.account.account,
+          invoiceController.invoice.createdAt);
+      print("perm");
+      print(Permission.storage.request().isGranted);
+
+      await Printing.layoutPdf(onLayout: (_) => a);
+      // print(a.runtimeType);
+      // String appDocDir =
+      //     '/Android/data/';
+      // String fileName =
+      //     'my_pdf_${DateTime.now().millisecondsSinceEpoch}.pdf';
+      // File file =
+      //     File('$appDocDir/$fileName');
+      // await file.writeAsBytes(a);
+      // await OpenFile.open(file.path);
+    }
+
+    Navigator.pop(context);
+    print("==============================================");
+    List<String> name = [];
+    List<double> cost = [];
+    final regexN = RegExp(r'selling_price":(\d+)');
+    for (int i = 0; i < invoiceController.invoice.details.length; i++) {
+      final inputString =
+          invoiceController.invoice.details[i].productDetails.toString();
+      print("-------------------------||=>");
+      print(invoiceController.invoice.details[i].productDetails);
+      final regex = RegExp(r'"selling_price":"(\d+)"');
+      final regexN = RegExp(r'"name":"([^"]+)"');
+      final matchN = regexN.firstMatch(inputString);
+      final match = regex.firstMatch(inputString);
+      var price = double.parse(match.group(1));
+      cost.add(price);
+      final product = matchN.group(1);
+      name.add(product);
+    }
+
+    _getbyte(name, cost);
   }
 
   double totalPayableAmount = 0;
@@ -295,34 +373,98 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                                     return Container(
                                         child: Wrap(
                                       children: [
-                                        // ListTile(
-                                        //   leading: Icon(
-                                        //     Icons.bluetooth,
-                                        //     color: Colors.blue,
-                                        //   ),
-                                        //   title: Text('Print over Bluetooth'),
-                                        //   onTap: () {
-                                        //     Permission.bluetooth.request();
-                                        //     Navigator.pop(context);
-                                        //     Get.to(() => PrintPage([
-                                        //           {
-                                        //             'title': 'Product 1',
-                                        //             'price': 10.0,
-                                        //             'qty': 2
-                                        //           },
-                                        //           {
-                                        //             'title': 'Product 2',
-                                        //             'price': 15.0,
-                                        //             'qty': 1
-                                        //           },
-                                        //           {
-                                        //             'title': 'Product 3',
-                                        //             'price': 5.0,
-                                        //             'qty': 3
-                                        //           }
-                                        //         ]));
-                                        //   },
-                                        // ),
+                                        ListTile(
+                                          leading: Icon(
+                                            Icons.bluetooth,
+                                            color: Colors.blue,
+                                          ),
+                                          title: Text('Print over Bluetooth '),
+                                          onTap: () {
+                                            var a;
+
+                                            final PdfPageFormat pdfPageFormat =
+                                                PdfPageFormat.roll57;
+                                            Permission.location.request();
+                                            _getbyte(List<String> N,
+                                                List<double> C) async {
+                                              a = await _generatePdf(
+                                                  pdfPageFormat,
+                                                  'Receipt',
+                                                  invoiceController
+                                                      .totalTaxAmount,
+                                                  invoiceController
+                                                      .discountOnProduct,
+                                                  totalPayableAmount,
+                                                  invoiceController.invoice.id,
+                                                  N,
+                                                  C,
+                                                  shopController.configModel
+                                                      .businessInfo.shopAddress,
+                                                  invoiceController
+                                                      .invoice.account.account,
+                                                  invoiceController
+                                                      .invoice.createdAt);
+                                              print("perm");
+                                              print(Permission.storage
+                                                  .request()
+                                                  .isGranted);
+
+                                              Permission.bluetooth.request();
+                                              Navigator.pop(context);
+                                              print(N);
+                                              List<Map<String, dynamic>>
+                                                  combined = [];
+
+                                              for (int i = 0;
+                                                  i < N.length;
+                                                  i++) {
+                                                Map<String, dynamic> newMap = {
+                                                  "name": N[i],
+                                                  "city": C[i]
+                                                };
+                                                combined.add(newMap);
+                                              }
+                                              print("LIST");
+                                              Get.to(() => PrintPage(combined));
+                                            }
+
+                                            Navigator.pop(context);
+
+                                            List<String> name = [];
+                                            List<double> cost = [];
+                                            final regexN =
+                                                RegExp(r'selling_price":(\d+)');
+                                            for (int i = 0;
+                                                i <
+                                                    invoiceController
+                                                        .invoice.details.length;
+                                                i++) {
+                                              final inputString =
+                                                  invoiceController.invoice
+                                                      .details[i].productDetails
+                                                      .toString();
+                                              print(
+                                                  "-------------------------||=>");
+                                              print(invoiceController.invoice
+                                                  .details[i].productDetails);
+                                              final regex = RegExp(
+                                                  r'"selling_price":"(\d+)"');
+                                              final regexN =
+                                                  RegExp(r'"name":"([^"]+)"');
+                                              final matchN = regexN
+                                                  .firstMatch(inputString);
+                                              final match =
+                                                  regex.firstMatch(inputString);
+                                              var price =
+                                                  double.parse(match.group(1));
+                                              cost.add(price);
+                                              final product = matchN.group(1);
+                                              name.add(product);
+                                            }
+
+                                            _getbyte(name, cost);
+                                          },
+                                        ),
                                         ListTile(
                                           leading: Icon(
                                             Icons.wifi,
@@ -330,10 +472,6 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                                           ),
                                           title: Text('Print over Any Printer'),
                                           onTap: () {
-                                            final double width =
-                                                595.0; // A4 width in points
-                                            final double height =
-                                                842.0; // A4 height in points
                                             var a;
 
                                             final PdfPageFormat pdfPageFormat =
@@ -690,7 +828,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                                   ),
                                   Text(
                                       PriceConverter.priceWithSymbol(
-                                          totalPayableAmount),
+                                          totalPayableAmount.roundToDouble()),
                                       style: fontSizeBold.copyWith(
                                           fontSize:
                                               Dimensions.FONT_SIZE_LARGE)),
@@ -702,7 +840,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'change'.tr,
+                                    'change/neglected'.tr,
                                     style: fontSizeRegular.copyWith(
                                         fontSize: Dimensions.FONT_SIZE_DEFAULT),
                                   ),
