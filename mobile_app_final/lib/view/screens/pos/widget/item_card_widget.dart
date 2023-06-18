@@ -45,7 +45,7 @@ class ItemCartWidget extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    flex: 5,
+                    flex: 3,
                     child: Container(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,

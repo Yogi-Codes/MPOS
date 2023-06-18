@@ -29,9 +29,11 @@ class LimitedStockProductModel {
   List<StockLimitedProducts> get stockLimitedProducts => _stockLimitedProducts;
 
   LimitedStockProductModel.fromJson(Map<String, dynamic> json) {
-    _total = int.parse(json['total']);
-    _offset = int.parse(json['offset']);
-    _limit = int.parse(json['limit']);
+    _total = json['total'] is int ? json['total'] : int.parse(json['total']);
+    _offset =
+        json['offset'] is int ? json['offset'] : int.parse(json['offset']);
+    _limit = json['limit'] is int ? json['limit'] : int.parse(json['limit']);
+
     if (json['stock_limited_products'] != null) {
       _stockLimitedProducts = <StockLimitedProducts>[];
       json['stock_limited_products'].forEach((v) {

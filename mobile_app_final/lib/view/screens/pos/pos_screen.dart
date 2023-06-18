@@ -27,6 +27,8 @@ import 'package:six_pos/view/screens/pos/widget/extra_discount_and_coupon_dialog
 import 'package:six_pos/view/screens/pos/widget/item_card_widget.dart';
 import 'package:six_pos/view/screens/user/add_new_suppliers_and_customers.dart';
 
+import '../../base/custom_drawer.dart';
+
 class PosScreen extends StatefulWidget {
   final bool fromMenu;
 
@@ -70,7 +72,8 @@ class _PosScreenState extends State<PosScreen> {
     }
 
     return Scaffold(
-      appBar: widget.fromMenu ? CustomAppBar() : null,
+      appBar: CustomAppBar(isBackButtonExist: false),
+      endDrawer: CustomDrawer(),
       body: Container(
         child: RefreshIndicator(
           color: Theme.of(context).cardColor,
@@ -797,7 +800,7 @@ class _PosScreenState extends State<PosScreen> {
                                                         .collectedCashController
                                                         .text
                                                         .trim()) <
-                                                    total) {
+                                                    total.roundToDouble()) {
                                               showCustomSnackBar(
                                                   'please_pay_full_amount'.tr);
                                             } else {

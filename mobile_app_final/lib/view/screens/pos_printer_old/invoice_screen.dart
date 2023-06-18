@@ -1,17 +1,7 @@
 import 'dart:convert';
-import 'dart:typed_data';
-import 'package:flutter/services.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
-import 'package:learning_translate/learning_translate.dart';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:six_pos/controller/order_controller.dart';
 import 'package:six_pos/controller/splash_controller.dart';
 import 'package:six_pos/helper/date_converter.dart';
@@ -24,9 +14,8 @@ import 'package:six_pos/view/base/custom_divider.dart';
 import 'package:six_pos/view/base/custom_drawer.dart';
 import 'package:six_pos/view/base/custom_header.dart';
 import 'package:six_pos/view/screens/pos_printer/invoice_print.dart';
-import 'package:six_pos/view/screens/pos_printer/wifi_print.dart';
-
 import 'widget/invoice_element_view.dart';
+import 'package:six_pos/view/screens/order/invoice_screen_old.dart';
 
 class InVoiceScreen extends StatefulWidget {
   final int orderId;
@@ -39,223 +28,6 @@ class InVoiceScreen extends StatefulWidget {
 class _InVoiceScreenState extends State<InVoiceScreen> {
   Future<void> _loadData() async {
     await Get.find<OrderController>().getInvoiceData(widget.orderId);
-  }
-
-  Future<Uint8List> _generatePdf(
-      PdfPageFormat format,
-      String title,
-      double tax,
-      double discount,
-      double totalPayable,
-      var id,
-      List<String> N,
-      List<double> C,
-      String address,
-      String method,
-      String date) async {
-    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
-    final ThaiFont = await PdfGoogleFonts.notoSerifThaiBlack();
-    final EnglishFont = await PdfGoogleFonts.openSansBold();
-
-    final logoImage = pw.MemoryImage(
-        (await rootBundle.load(Images.mpos_super_shop)).buffer.asUint8List());
-    const double fontsize = 9;
-
-    pdf.addPage(
-      pw.Page(
-        pageFormat: format,
-        margin: pw.EdgeInsets.all(10),
-        build: (context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.center,
-            children: [
-              pw.Container(
-                height: 70,
-                child: pw.Center(
-                  child: pw.Image(logoImage),
-                ),
-              ),
-              pw.SizedBox(height: 30),
-              pw.Center(
-                child: pw.SizedBox(
-                  width: 120,
-                  child: pw.FittedBox(
-                    child: pw.Text(title,
-                        style: pw.TextStyle(
-                            font: EnglishFont, color: PdfColors.black)),
-                  ),
-                ),
-              ),
-              pw.SizedBox(height: 30),
-              pw.Text(address,
-                  textAlign: pw.TextAlign.center,
-                  style: pw.TextStyle(
-                      color: PdfColors.black,
-                      fontSize: fontsize,
-                      font: EnglishFont)),
-              pw.Text('----------------------------------------------',
-                  style:
-                      pw.TextStyle(color: PdfColors.black, fontSize: fontsize)),
-              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Expanded(
-                  child: pw.Text('รหัสคำสั่งซื้อ :# ',
-                      style: pw.TextStyle(
-                          color: PdfColors.blue500,
-                          fontSize: fontsize,
-                          font: ThaiFont)),
-                ),
-                pw.Expanded(
-                  child: pw.Text(id.toString() + '                ',
-                      style: pw.TextStyle(
-                          color: PdfColors.blue500,
-                          fontSize: fontsize,
-                          font: EnglishFont)),
-                ),
-                pw.Expanded(
-                  child: pw.Text('วิธีการชำระเงิน',
-                      style: pw.TextStyle(
-                          color: PdfColors.blue500,
-                          fontSize: fontsize,
-                          font: ThaiFont)),
-                ),
-              ]),
-              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Expanded(
-                  child: pw.Text(
-                      DateConverter.dateTimeStringToMonthAndTime(date) +
-                          '                 ',
-                      style: pw.TextStyle(
-                          color: PdfColors.blue500,
-                          fontSize: fontsize,
-                          font: EnglishFont)),
-                ),
-                pw.Expanded(
-                  child: pw.Text(method.tr.toString(),
-                      style: pw.TextStyle(
-                          color: PdfColors.black,
-                          fontSize: fontsize,
-                          font: EnglishFont)),
-                ),
-              ]),
-              pw.Text('----------------------------------------------',
-                  style:
-                      pw.TextStyle(color: PdfColors.black, fontSize: fontsize)),
-              for (int i = 0; i < N.length; i++)
-                pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.center,
-                    children: [
-                      pw.Expanded(
-                        child: pw.Text('${i + 1}',
-                            textAlign: pw.TextAlign.center,
-                            style: pw.TextStyle(
-                                color: PdfColors.black,
-                                fontSize: fontsize,
-                                font: EnglishFont)),
-                      ),
-                      pw.Expanded(
-                        child: pw.Text('${N[i].toString()}',
-                            style: pw.TextStyle(
-                                color: PdfColors.black,
-                                fontSize: fontsize,
-                                font: EnglishFont)),
-                      ),
-                      pw.Expanded(
-                        child: pw.Text(C[i].toString(),
-                            style: pw.TextStyle(
-                                color: PdfColors.black,
-                                fontSize: fontsize,
-                                font: EnglishFont)),
-                      ),
-                    ]),
-              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Expanded(
-                  child: pw.Text('ส่วนลด',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(
-                          color: PdfColors.black,
-                          fontSize: fontsize,
-                          font: ThaiFont)),
-                ),
-                pw.Expanded(
-                  child: pw.Text(discount.toStringAsFixed(2),
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(
-                          color: PdfColors.black,
-                          fontSize: fontsize,
-                          font: EnglishFont)),
-                ),
-              ]),
-              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Expanded(
-                  child: pw.Text('สภาษีมูลค่าเพิ่มรวม',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(
-                          color: PdfColors.black,
-                          fontSize: fontsize,
-                          font: ThaiFont)),
-                ),
-                pw.Expanded(
-                  child: pw.Text(tax.toStringAsFixed(2),
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(
-                          color: PdfColors.black,
-                          fontSize: fontsize,
-                          font: EnglishFont)),
-                ),
-              ]),
-              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Expanded(
-                  child: pw.Text('ยอดชำระเงินทั้งหมด ',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(
-                          color: PdfColors.black,
-                          fontSize: fontsize,
-                          font: ThaiFont)),
-                ),
-                pw.Expanded(
-                  child: pw.Text(
-                      totalPayable.roundToDouble().toStringAsFixed(2),
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(
-                          color: PdfColors.black,
-                          fontSize: fontsize,
-                          font: EnglishFont)),
-                ),
-              ]),
-              pw.Text('----------------------------------------------',
-                  style:
-                      pw.TextStyle(color: PdfColors.black, fontSize: fontsize)),
-              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Expanded(
-                  child: pw.Text('terms_and_condition'.tr,
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(
-                          color: PdfColors.black,
-                          fontSize: fontsize,
-                          font: ThaiFont)),
-                ),
-              ]),
-              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Expanded(
-                  child: pw.Text('terms_and_condition_details'.tr,
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(
-                          color: PdfColors.black,
-                          fontSize: fontsize,
-                          font: ThaiFont)),
-                ),
-              ]),
-              pw.Text('----------------------------------------------',
-                  style:
-                      pw.TextStyle(color: PdfColors.black, fontSize: fontsize)),
-            ],
-          );
-        },
-      ),
-    );
-
-    final pdfBytes = await pdf.save();
-    return Uint8List.fromList(pdfBytes);
   }
 
   double totalPayableAmount = 0;
@@ -307,194 +79,14 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                           ),
                           child: InkWell(
                             onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                        child: Wrap(
-                                      children: [
-                                        ListTile(
-                                          leading: Icon(
-                                            Icons.bluetooth,
-                                            color: Colors.blue,
-                                          ),
-                                          title: Text('Print over Bluetooth'),
-                                          onTap: () {
-                                            var a;
-
-                                            final PdfPageFormat pdfPageFormat =
-                                                PdfPageFormat.roll57;
-                                            Permission.location.request();
-                                            _getbyte(List<String> N,
-                                                List<double> C) async {
-                                              a = await _generatePdf(
-                                                  pdfPageFormat,
-                                                  'Receipt',
-                                                  invoiceController
-                                                      .totalTaxAmount,
-                                                  invoiceController
-                                                      .discountOnProduct,
-                                                  totalPayableAmount,
-                                                  invoiceController.invoice.id,
-                                                  N,
-                                                  C,
-                                                  shopController.configModel
-                                                      .businessInfo.shopAddress,
-                                                  invoiceController
-                                                      .invoice.account.account,
-                                                  invoiceController
-                                                      .invoice.createdAt);
-                                              print("perm");
-                                              print(Permission.storage
-                                                  .request()
-                                                  .isGranted);
-
-                                              Permission.bluetooth.request();
-                                              Navigator.pop(context);
-                                              print(N);
-                                              List<Map<String, dynamic>>
-                                                  combined = [];
-
-                                              for (int i = 0;
-                                                  i < N.length;
-                                                  i++) {
-                                                Map<String, dynamic> newMap = {
-                                                  "name": N[i],
-                                                  "city": C[i]
-                                                };
-                                                combined.add(newMap);
-                                              }
-                                              print("LIST");
-                                              Get.to(() => PrintPage(combined));
-                                            }
-
-                                            Navigator.pop(context);
-
-                                            List<String> name = [];
-                                            List<double> cost = [];
-                                            final regexN =
-                                                RegExp(r'selling_price":(\d+)');
-                                            for (int i = 0;
-                                                i <
-                                                    invoiceController
-                                                        .invoice.details.length;
-                                                i++) {
-                                              final inputString =
-                                                  invoiceController.invoice
-                                                      .details[i].productDetails
-                                                      .toString();
-                                              print(
-                                                  "-------------------------||=>");
-                                              print(invoiceController.invoice
-                                                  .details[i].productDetails);
-                                              final regex = RegExp(
-                                                  r'"selling_price":"(\d+)"');
-                                              final regexN =
-                                                  RegExp(r'"name":"([^"]+)"');
-                                              final matchN = regexN
-                                                  .firstMatch(inputString);
-                                              final match =
-                                                  regex.firstMatch(inputString);
-                                              var price =
-                                                  double.parse(match.group(1));
-                                              cost.add(price);
-                                              final product = matchN.group(1);
-                                              name.add(product);
-                                            }
-
-                                            _getbyte(name, cost);
-                                          },
-                                        ),
-                                        ListTile(
-                                          leading: Icon(
-                                            Icons.wifi,
-                                            color: Colors.blue,
-                                          ),
-                                          title: Text('Print over Any Printer'),
-                                          onTap: () {
-                                            var a;
-
-                                            final PdfPageFormat pdfPageFormat =
-                                                PdfPageFormat.roll57;
-                                            Permission.location.request();
-                                            _getbyte(List<String> N,
-                                                List<double> C) async {
-                                              a = await _generatePdf(
-                                                  pdfPageFormat,
-                                                  'Receipt',
-                                                  invoiceController
-                                                      .totalTaxAmount,
-                                                  invoiceController
-                                                      .discountOnProduct,
-                                                  totalPayableAmount,
-                                                  invoiceController.invoice.id,
-                                                  N,
-                                                  C,
-                                                  shopController.configModel
-                                                      .businessInfo.shopAddress,
-                                                  invoiceController
-                                                      .invoice.account.account,
-                                                  invoiceController
-                                                      .invoice.createdAt);
-                                              print("perm");
-                                              print(Permission.storage
-                                                  .request()
-                                                  .isGranted);
-
-                                              await Printing.layoutPdf(
-                                                  onLayout: (_) => a);
-                                              // print(a.runtimeType);
-                                              // String appDocDir =
-                                              //     '/Android/data/';
-                                              // String fileName =
-                                              //     'my_pdf_${DateTime.now().millisecondsSinceEpoch}.pdf';
-                                              // File file =
-                                              //     File('$appDocDir/$fileName');
-                                              // await file.writeAsBytes(a);
-                                              // await OpenFile.open(file.path);
-                                            }
-
-                                            Navigator.pop(context);
-                                            print(
-                                                "==============================================");
-                                            List<String> name = [];
-                                            List<double> cost = [];
-                                            final regexN =
-                                                RegExp(r'selling_price":(\d+)');
-                                            for (int i = 0;
-                                                i <
-                                                    invoiceController
-                                                        .invoice.details.length;
-                                                i++) {
-                                              final inputString =
-                                                  invoiceController.invoice
-                                                      .details[i].productDetails
-                                                      .toString();
-                                              print(
-                                                  "-------------------------||=>");
-                                              print(invoiceController.invoice
-                                                  .details[i].productDetails);
-                                              final regex = RegExp(
-                                                  r'"selling_price":"(\d+)"');
-                                              final regexN =
-                                                  RegExp(r'"name":"([^"]+)"');
-                                              final matchN = regexN
-                                                  .firstMatch(inputString);
-                                              final match =
-                                                  regex.firstMatch(inputString);
-                                              var price =
-                                                  double.parse(match.group(1));
-                                              cost.add(price);
-                                              final product = matchN.group(1);
-                                              name.add(product);
-                                            }
-
-                                            _getbyte(name, cost);
-                                          },
-                                        ),
-                                      ],
-                                    ));
-                                  });
+                              Get.to(InVoicePrintScreen(
+                                configModel: shopController.configModel,
+                                invoice: invoiceController.invoice,
+                                orderId: widget.orderId,
+                                discountProduct:
+                                    invoiceController.discountOnProduct,
+                                total: totalPayableAmount,
+                              ));
                             },
                             child: Center(
                                 child: Row(
@@ -526,7 +118,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                   children: [
                     SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                     Text(
-                      'Mpos Super Shop',
+                      shopController.configModel.businessInfo.shopName,
                       style: fontSizeBold.copyWith(
                         color: Theme.of(context).primaryColor,
                         fontSize: Dimensions.FONT_SIZE_OVER_OVER_LARGE,
@@ -768,7 +360,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                                   ),
                                   Text(
                                       PriceConverter.priceWithSymbol(
-                                          totalPayableAmount.roundToDouble()),
+                                          totalPayableAmount),
                                       style: fontSizeBold.copyWith(
                                           fontSize:
                                               Dimensions.FONT_SIZE_LARGE)),
@@ -780,7 +372,7 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'change/neglected'.tr,
+                                    'change'.tr,
                                     style: fontSizeRegular.copyWith(
                                         fontSize: Dimensions.FONT_SIZE_DEFAULT),
                                   ),
@@ -821,7 +413,8 @@ class _InVoiceScreenState extends State<InVoiceScreen> {
                               ),
                               Column(
                                 children: [
-                                  Text('${'powered_by'.tr} ${'MPOS'}',
+                                  Text(
+                                      '${'powered_by'.tr} ${shopController.configModel.businessInfo.shopName}',
                                       style: fontSizeMedium.copyWith(
                                           fontSize: Dimensions
                                               .FONT_SIZE_EXTRA_LARGE)),

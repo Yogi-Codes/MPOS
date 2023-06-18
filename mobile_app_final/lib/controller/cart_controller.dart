@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:six_pos/controller/order_controller.dart';
+import 'package:six_pos/controller/splash_controller.dart';
 import 'package:six_pos/controller/transaction_controller.dart';
 import 'package:six_pos/data/api/api_checker.dart';
 import 'package:six_pos/data/model/body/place_order_body.dart';
@@ -14,7 +16,9 @@ import 'package:six_pos/data/repository/cart_repo.dart';
 import 'package:six_pos/view/base/custom_snackbar.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:six_pos/view/screens/order/invoice_screen.dart';
+import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
+
+import 'package:six_pos/view/screens/order/invoice_screen_direcct.dart';
 
 class CartController extends GetxController implements GetxService {
   final CartRepo cartRepo;
@@ -413,7 +417,12 @@ class CartController extends GetxController implements GetxService {
             _customerCartList[_customerIndex].customerBalance,
             true);
       }
-      Get.to(() => InVoiceScreen(orderId: response.body['order_id']));
+
+      await Permission.location.request();
+
+      Future.delayed(Duration(seconds: 1), () {
+        Get.to(() => InVoiceScreen(orderId: response.body['order_id']));
+      });
     } else {
       ApiChecker.checkApi(response);
     }

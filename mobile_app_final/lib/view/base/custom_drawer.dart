@@ -126,12 +126,12 @@ class CustomDrawer extends StatelessWidget {
               //   buttonText: 'users'.tr,
               //   onTap: () => Get.to(() => UserScreen()),
               // ),
-              // Divider(height: 3, color: Theme.of(context).cardColor),
-              // CustomCategoryButton(
-              //   icon: Images.shop_icon,
-              //   buttonText: 'shop_settings'.tr,
-              //   onTap: () => Get.to(() => ShopSettings()),
-              // ),
+              Divider(height: 3, color: Theme.of(context).cardColor),
+              CustomCategoryButton(
+                icon: Images.shop_icon,
+                buttonText: 'shop_settings'.tr,
+                onTap: () => Get.to(() => ShopSettings()),
+              ),
               // Divider(height: 3, color: Theme.of(context).cardColor),
               CustomCategoryButton(
                 icon: Images.language_logo,
@@ -144,12 +144,13 @@ class CustomDrawer extends StatelessWidget {
               //   buttonText: 'Limited Products'.tr,
               //   onTap: () => Get.to(() => LimitedStockProductScreen()),
               // ),
-              // CustomCategoryButton(
-              //     icon: Images.logout,
-              //     buttonText: 'log_out'.tr,
-              //     onTap: () => showAnimatedDialog(
-              //         context, SignOutConfirmationDialog(),
-              //         isFlip: true)),
+              Divider(height: 3, color: Theme.of(context).cardColor),
+              CustomCategoryButton(
+                  icon: Images.logout,
+                  buttonText: 'lock'.tr,
+                  onTap: () => showAnimatedDialog(
+                      context, SignOutConfirmationDialog(),
+                      isFlip: true)),
             ]),
           ),
         ]);

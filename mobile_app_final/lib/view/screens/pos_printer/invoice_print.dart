@@ -76,7 +76,7 @@ class _PrintPageState extends State<PrintPage> {
       list.add(
         LineText(
           type: LineText.TYPE_TEXT,
-          content: "Grocery App",
+          content: "Mpos Super Shop App",
           weight: 2,
           width: 2,
           height: 2,

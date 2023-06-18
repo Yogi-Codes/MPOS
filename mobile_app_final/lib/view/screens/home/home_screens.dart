@@ -7,6 +7,7 @@ import 'package:six_pos/util/color_resources.dart';
 import 'package:six_pos/util/dimensions.dart';
 import 'package:six_pos/util/images.dart';
 import 'package:six_pos/util/styles.dart';
+import 'package:six_pos/view/base/custom_app_bar.dart';
 import 'package:six_pos/view/base/custom_drawer.dart';
 import 'package:six_pos/view/base/title_row.dart';
 import 'package:six_pos/view/screens/account_management/account_list_screen.dart';
@@ -34,9 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(isBackButtonExist: false),
+      endDrawer: CustomDrawer(),
       backgroundColor: Theme.of(context).primaryColor.withOpacity(.03),
       resizeToAvoidBottomInset: false,
-      endDrawer: CustomDrawer(),
       body: SafeArea(
         child: RefreshIndicator(
           color: Theme.of(context).cardColor,

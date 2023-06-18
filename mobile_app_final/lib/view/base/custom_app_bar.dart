@@ -10,7 +10,8 @@ import 'package:six_pos/view/screens/dashboard/nav_bar_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isBackButtonExist;
-  CustomAppBar({this.isBackButtonExist = true});
+  CustomAppBar({this.isBackButtonExist = true, this.extraTitle});
+  final Widget extraTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onTap: () => Get.find<MenuController>().selectHomePage(),
                   child: Image.asset(Images.mpos, width: 120, height: 30)),
             ),
-      title: Text(''),
+      title: extraTitle,
       actions: [
         GetBuilder<CartController>(builder: (cartController) {
           return Padding(

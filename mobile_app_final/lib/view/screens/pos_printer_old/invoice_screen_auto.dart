@@ -1,16 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 
 import 'package:flutter/services.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:learning_translate/learning_translate.dart';
 
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -26,7 +22,6 @@ import 'package:six_pos/view/base/custom_divider.dart';
 import 'package:six_pos/view/base/custom_drawer.dart';
 import 'package:six_pos/view/base/custom_header.dart';
 import 'package:six_pos/view/screens/pos_printer/invoice_print.dart';
-import 'package:six_pos/view/screens/pos_printer/wifi_print.dart';
 
 import 'widget/invoice_element_view.dart';
 

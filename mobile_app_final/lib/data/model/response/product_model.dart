@@ -25,7 +25,6 @@ class ProductModel {
   String get offset => _offset;
   List<Products> get products => _products;
 
-
   ProductModel.fromJson(Map<String, dynamic> json) {
     _total = json['total'];
     _limit = json['limit'].toString();
@@ -69,20 +68,20 @@ class Products {
 
   Products(
       {int id,
-        String title,
-        String productCode,
-        int unitType,
-        int unitValue,
-        Brand brand,
-        List<CategoryIds> categoryIds,
-        double purchasePrice,
-        double sellingPrice,
-        String discountType,
-        double discount,
-        double tax,
-        int quantity,
-        String image,
-        Supplier supplier}) {
+      String title,
+      String productCode,
+      int unitType,
+      int unitValue,
+      Brand brand,
+      List<CategoryIds> categoryIds,
+      double purchasePrice,
+      double sellingPrice,
+      String discountType,
+      double discount,
+      double tax,
+      int quantity,
+      String image,
+      Supplier supplier}) {
     if (id != null) {
       this._id = id;
     }
@@ -150,43 +149,43 @@ class Products {
     _id = json['id'];
     _title = json['title'];
     _productCode = json['product_code'];
-    _unitType = json['unit_type'];
+    _unitType = int.parse(json['unit_type']);
     _unitValue = json['unit_value'];
-    _brand = json['brand'] != null?  new Brand.fromJson(json['brand']) : null;
+    _brand = json['brand'] != null ? new Brand.fromJson(json['brand']) : null;
     if (json['category_ids'] != null) {
       _categoryIds = <CategoryIds>[];
       json['category_ids'].forEach((v) {
         _categoryIds.add(new CategoryIds.fromJson(v));
       });
     }
-    if(json['purchase_price'] != null){
-      _purchasePrice = json['purchase_price'].toDouble();
-    }else{
+    if (json['purchase_price'] != null) {
+      _purchasePrice = double.parse(json['purchase_price']);
+    } else {
       _purchasePrice = 0.0;
     }
 
-    if(json['selling_price'] != null){
-      _sellingPrice = json['selling_price'].toDouble();
-    }else{
+    if (json['selling_price'] != null) {
+      _sellingPrice = double.parse(json['selling_price']);
+    } else {
       _sellingPrice = 0.0;
     }
 
     _discountType = json['discount_type'];
-    if(json['discount'] != null){
-      _discount = json['discount'].toDouble();
-    }else{
+    if (json['discount'] != null) {
+      _discount = double.parse(json['discount']);
+    } else {
       _discount = 0.0;
     }
 
-    if(json['tax'] != null){
-      _tax = json['tax'].toDouble();
-    }else{
+    if (json['tax'] != null) {
+      _tax = double.parse(json['tax']);
+    } else {
       _tax = 0.0;
     }
-    _quantity = json['quantity'];
+    _quantity = int.parse(json['quantity']);
     _image = json['image'];
-    _supplier = json['supplier'] != null?
-         new Supplier.fromJson(json['supplier'])
+    _supplier = json['supplier'] != null
+        ? new Supplier.fromJson(json['supplier'])
         : null;
   }
 
@@ -222,14 +221,11 @@ class Brand {
   String _name;
   String _image;
 
-
-
-  Brand(
-      {int id,
-        String name,
-        String image,
-
-       }) {
+  Brand({
+    int id,
+    String name,
+    String image,
+  }) {
     if (id != null) {
       this._id = id;
     }
@@ -239,21 +235,16 @@ class Brand {
     if (image != null) {
       this._image = image;
     }
-
-
   }
 
   int get id => _id;
   String get name => _name;
   String get image => _image;
 
-
-
   Brand.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _name = json['name'];
     _image = json['image'];
-
   }
 
   Map<String, dynamic> toJson() {
@@ -282,7 +273,6 @@ class CategoryIds {
   String get id => _id;
   int get position => _position;
 
-
   CategoryIds.fromJson(Map<String, dynamic> json) {
     _id = json['id'].toString();
     _position = json['position'];
@@ -307,19 +297,17 @@ class Supplier {
   String _zipCode;
   String _address;
 
-
-
-  Supplier(
-      {int id,
-        String name,
-        String mobile,
-        String email,
-        String image,
-        String state,
-        String city,
-        String zipCode,
-        String address,
-      }) {
+  Supplier({
+    int id,
+    String name,
+    String mobile,
+    String email,
+    String image,
+    String state,
+    String city,
+    String zipCode,
+    String address,
+  }) {
     if (id != null) {
       this._id = id;
     }
@@ -347,8 +335,6 @@ class Supplier {
     if (address != null) {
       this._address = address;
     }
-
-
   }
 
   int get id => _id;
@@ -361,7 +347,6 @@ class Supplier {
   String get zipCode => _zipCode;
   String get address => _address;
 
-
   Supplier.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _name = json['name'];
@@ -372,7 +357,6 @@ class Supplier {
     _city = json['city'];
     _zipCode = json['zip_code'];
     _address = json['address'];
-
   }
 
   Map<String, dynamic> toJson() {

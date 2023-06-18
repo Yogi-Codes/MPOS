@@ -4,8 +4,7 @@ class CouponModel {
   String _offset;
   List<Coupons> _coupons;
 
-  CouponModel(
-      {int total, String limit, String offset, List<Coupons> coupons}) {
+  CouponModel({int total, String limit, String offset, List<Coupons> coupons}) {
     if (total != null) {
       this._total = total;
     }
@@ -67,19 +66,19 @@ class Coupons {
 
   Coupons(
       {int id,
-        String title,
-        String couponType,
-        int userLimit,
-        String couponCode,
-        String startDate,
-        String expireDate,
-        String minPurchase,
-        String maxDiscount,
-        String discount,
-        String discountType,
-        int status,
-        String createdAt,
-        String updatedAt}) {
+      String title,
+      String couponType,
+      int userLimit,
+      String couponCode,
+      String startDate,
+      String expireDate,
+      String minPurchase,
+      String maxDiscount,
+      String discount,
+      String discountType,
+      int status,
+      String createdAt,
+      String updatedAt}) {
     if (id != null) {
       this._id = id;
     }
@@ -145,12 +144,11 @@ class Coupons {
   String get createdAt => _createdAt;
   String get updatedAt => _updatedAt;
 
-
   Coupons.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _title = json['title'];
     _couponType = json['coupon_type'];
-    _userLimit = json['user_limit'];
+    _userLimit = int.parse(json['user_limit']);
     _couponCode = json['code'];
     _startDate = json['start_date'];
     _expireDate = json['expire_date'];
@@ -158,7 +156,7 @@ class Coupons {
     _maxDiscount = json['max_discount'];
     _discount = json['discount'];
     _discountType = json['discount_type'];
-    _status = json['status'];
+    _status = int.parse(json['status']);
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
   }

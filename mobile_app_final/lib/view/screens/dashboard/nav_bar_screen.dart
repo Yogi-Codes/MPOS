@@ -72,37 +72,37 @@ class _NavBarScreenState extends State<NavBarScreen> {
       onWillPop: () => _onWillPop(context),
       child: GetBuilder<MenuController>(builder: (menuController) {
         return Scaffold(
-          appBar: CustomAppBar(isBackButtonExist: false),
+          // appBar: CustomAppBar(isBackButtonExist: false),
           backgroundColor:
               Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
           endDrawer: CustomDrawer(),
           body:
               PageStorage(bucket: bucket, child: menuController.currentScreen),
-          floatingActionButton: UnicornOutlineButton(
-              strokeWidth: 0,
-              radius: 50,
-              gradient: LinearGradient(colors: [
-                ColorResources.gradientColor,
-                ColorResources.gradientColor.withOpacity(0.5),
-                ColorResources.secondaryColor.withOpacity(0.3),
-                ColorResources.gradientColor.withOpacity(0.05),
-                ColorResources.gradientColor.withOpacity(0),
-              ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-              child: FloatingActionButton(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  elevation: 1,
-                  onPressed: () {
-                    Get.find<CartController>().scanProductBarCode();
-                  },
-                  child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Image.asset(Images.scanner)))),
+          // floatingActionButton: UnicornOutlineButton(
+          //     strokeWidth: 0,
+          //     radius: 50,
+          //     gradient: LinearGradient(colors: [
+          //       ColorResources.gradientColor,
+          //       ColorResources.gradientColor.withOpacity(0.5),
+          //       ColorResources.secondaryColor.withOpacity(0.3),
+          //       ColorResources.gradientColor.withOpacity(0.05),
+          //       ColorResources.gradientColor.withOpacity(0),
+          //     ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+          //     child: FloatingActionButton(
+          //         backgroundColor: Theme.of(context).primaryColor,
+          //         elevation: 1,
+          //         onPressed: () {
+          //           Get.find<CartController>().scanProductBarCode();
+          //         },
+          //         child: Padding(
+          //             padding: const EdgeInsets.all(15.0),
+          //             child: Image.asset(Images.scanner)))),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: Container(
-            height: 60,
+            height: 20,
             decoration: BoxDecoration(
-              color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+              color: Colors.black87,
               boxShadow: [
                 BoxShadow(
                     color: Colors.grey.withOpacity(0.14),
@@ -115,8 +115,25 @@ class _NavBarScreenState extends State<NavBarScreen> {
               ],
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Text(
+                  "M",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 5),
+                Text(
+                  "Mpos",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
                 // customBottomItem(
                 //   tap: () => menuController.selectHomePage(),
                 //   icon: menuController.currentTab == 0

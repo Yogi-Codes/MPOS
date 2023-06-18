@@ -35,6 +35,7 @@ class ItemCardWidget extends StatelessWidget {
           }
         },
         child: Container(
+          width: 10,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.PADDING_SIZE_BORDER),
           ),
@@ -48,8 +49,8 @@ class ItemCardWidget extends StatelessWidget {
                     borderRadius:
                         BorderRadius.circular(Dimensions.PADDING_SIZE_BORDER),
                   ),
-                  width: Dimensions.PRODUCT_IMAGE_SIZE_ITEM,
-                  height: Dimensions.PRODUCT_IMAGE_SIZE_ITEM,
+                  width: 30.0,
+                  height: 25.0,
                   child: ClipRRect(
                     borderRadius:
                         BorderRadius.circular(Dimensions.PADDING_SIZE_BORDER),
@@ -63,17 +64,16 @@ class ItemCardWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
               Container(
-                height: 50,
+                height: 15,
                 child: Text(categoriesProduct.title,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: fontSizeRegular.copyWith(
-                        fontSize: Dimensions.FONT_SIZE_DEFAULT),
+                        fontSize: 10), // Update font size here
                     textAlign: TextAlign.center),
               ),
-              SizedBox(height: Dimensions.PADDING_SIZE_BORDER),
+              SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
               categoriesProduct.discount > 0
                   ? Text(
                       PriceConverter.priceWithSymbol(
@@ -81,7 +81,8 @@ class ItemCardWidget extends StatelessWidget {
                       ),
                       style: fontSizeRegular.copyWith(
                           color: Theme.of(context).primaryColor,
-                          decoration: TextDecoration.lineThrough),
+                          decoration: TextDecoration.lineThrough,
+                          fontSize: 8), // Update font size here
                     )
                   : SizedBox(),
               SizedBox(height: Dimensions.PADDING_SIZE_BORDER),
@@ -90,7 +91,8 @@ class ItemCardWidget extends StatelessWidget {
                     context, categoriesProduct.sellingPrice,
                     discount: categoriesProduct.discount,
                     discountType: categoriesProduct.discountType),
-                style: fontSizeRegular.copyWith(color: Colors.green),
+                style: fontSizeRegular.copyWith(
+                    color: Colors.green, fontSize: 10), // Update font size here
               ),
             ],
           ),

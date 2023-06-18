@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               navigatorKey: Get.key,
               theme: ThemeData(
-                primaryColor: Color(0xFFde0403),
+                primaryColor: Color(0xFF028FD0),
                 textTheme: TextTheme(
                   bodyText1: TextStyle(color: Colors.black),
                   bodyText2: TextStyle(color: Colors.black),
